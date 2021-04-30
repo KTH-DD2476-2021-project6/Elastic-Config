@@ -27,20 +27,37 @@ code {
   border-radius: 5px;
 }
 
+.cardHover:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.cardImage {
+  height: 80%;
+  width: 100%;
+}
+
+.cardElement {
+  display: flex;
+}
+
 .wrapper {
   position: relative;
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   min-width: 100px;
 }
 
 .search-icon {
   position: absolute;
-  top: 8px;
+  top: 9px;
   left: 8px;
   width: 14px;
 }
 
 .search {
+  display: flex;
   border: 1px solid grey;
   border-radius: 5px;
   height: 30px;
