@@ -17,9 +17,27 @@ code {
   margin-bottom: 20px;
 }
 
+.app-base {
+  box-sizing: border-box;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .container {
-  max-width: 900px;
-  margin: 30px auto;
+  max-width: 1000px;
+  margin: 20px;
+  overflow: auto;
+  min-height: 700px;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.container-cart {
+  min-width: 400px;
+  margin: 20px;
   overflow: auto;
   min-height: 700px;
   border: 1px solid steelblue;
@@ -32,13 +50,24 @@ code {
   cursor: pointer;
 }
 
+.card-image-container {
+  width: 100%;
+  height: 200px;
+}
+
 .cardImage {
-  height: 80%;
+  height: 100%;
   width: 100%;
 }
 
 .cardElement {
   display: flex;
+  max-width: 230px;
+  max-height: fit-content;
+}
+
+.cardText {
+  max-height: 100px;
 }
 
 .wrapper {

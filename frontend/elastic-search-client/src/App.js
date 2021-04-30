@@ -11,10 +11,15 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <Header title="Book Recommendation's - Elastic Search" />
-      <SearchBar value={input} onChange={onInputChange} />
-      <BookList />
+    <div className="app-base">
+      <div className="container">
+        <div>
+          <Header title="Book Recommendation's - Elastic Search" />
+          <SearchBar value={input} onChange={onInputChange} />
+          <BookList />
+        </div>
+      </div>
+      <div className="container-cart">PreferredList</div>
     </div>
   );
 }

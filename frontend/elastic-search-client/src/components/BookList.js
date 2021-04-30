@@ -38,6 +38,19 @@ const BookList = () => {
       about:
         "Malcolm Gladwell is the author of five New York Times bestsellers\u2014The Tipping Point, Blink, Outliers, What the Dog Saw, and David and Goliath. He is also the co-founder of Pushkin Industries, an audio content company that produces the podcasts Revisionist History, which reconsiders things both overlooked and misunderstood, and Broken Record, where he, Rick Rubin, and Bruce Headlam interview musicians across a wide range of genres. Gladwell has been included in the TIME 100 Most Influential People list and touted as one of Foreign Policy's Top Global Thinkers. Malcolm Gladwell is the author of five New York Times bestsellers\u2014The Tipping Point, Blink, Outliers, What the Dog Saw, and David and Goliath. He is also the co-founder of Pushkin Industries, an audio content company that produces the podcasts Revisionist History, which reconsiders things both overlooked and misunderstood, and Broken Record, where he, Rick Rubin, and Bruce Headlam interview musicians across a wide range of genres. Gladwell has been included in the TIME 100 Most Influential People list and touted as one of Foreign Policy's Top Global Thinkers. ...more",
     },
+    {
+      id: 3,
+      url: "https://www.goodreads.com/author/show/1439.Malcolm_Gladwell",
+      image: "https://images.gr-assets.com/authors/1564001739p8/1439.jpg",
+      name: "Malcolm Gladwell",
+      birth_date: "1963-09-03 00:00:00",
+      genres: ["Psychology", "Business", "Nonfiction"],
+      avg_rating: 4.02,
+      num_reviews: 89599,
+      num_ratings: 2271524,
+      about:
+        "Malcolm Gladwell is the author of five New York Times bestsellers\u2014The Tipping Point, Blink, Outliers, What the Dog Saw, and David and Goliath. He is also the co-founder of Pushkin Industries, an audio content company that produces the podcasts Revisionist History, which reconsiders things both overlooked and misunderstood, and Broken Record, where he, Rick Rubin, and Bruce Headlam interview musicians across a wide range of genres. Gladwell has been included in the TIME 100 Most Influential People list and touted as one of Foreign Policy's Top Global Thinkers. Malcolm Gladwell is the author of five New York Times bestsellers\u2014The Tipping Point, Blink, Outliers, What the Dog Saw, and David and Goliath. He is also the co-founder of Pushkin Industries, an audio content company that produces the podcasts Revisionist History, which reconsiders things both overlooked and misunderstood, and Broken Record, where he, Rick Rubin, and Bruce Headlam interview musicians across a wide range of genres. Gladwell has been included in the TIME 100 Most Influential People list and touted as one of Foreign Policy's Top Global Thinkers. ...more",
+    },
   ];
 
   return (
@@ -54,11 +67,13 @@ const BookList = () => {
                     console.log(`Clicked ID ${author.id}!`);
                   }}
                 >
-                  <img
-                    className="card-img-top cardImage"
-                    src={author.image}
-                    alt="Cover"
-                  />
+                  <div className="card-image-container">
+                    <img
+                      className="card-img-top cardImage"
+                      src={author.image}
+                      alt="Cover"
+                    />
+                  </div>
                   <div className="card-body">
                     <small className="card-text">
                       <b>{author.name}</b>
@@ -66,6 +81,15 @@ const BookList = () => {
                     <br />
                     <small className="card-text">
                       Average rating: {author.avg_rating}
+                    </small>
+                    <br />
+                    <small className="card-text">
+                      Genres -
+                      {author.genres ? (
+                        author.genres.map((genre) => <em> {genre}, </em>)
+                      ) : (
+                        <em> not specified...</em>
+                      )}
                     </small>
                   </div>
                 </div>
