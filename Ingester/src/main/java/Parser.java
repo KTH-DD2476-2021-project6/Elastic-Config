@@ -4,43 +4,31 @@ import data.Author;
 import data.Book;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.Queue;
 
-public class Parser {
-    Ingester ingester;
-    public Parser(Ingester ingester) {
-        this.ingester = ingester;
-    }
-
-    public void parseBooks(Path path) {
-        try (var in = new FileInputStream(path.toFile())) {
+public abstract class Parser {
+    public static void parseBooks(InputStream stream, Queue<Book> books) throws IOException {
             var mapper = new ObjectMapper();
             mapper.setAnnotationIntrospector(Ingester.implicitRecordAI);
-            var jp = new JsonFactory().createParser(in);
+            var jp = new JsonFactory().createParser(stream);
             jp.setCodec(mapper);
-            jp.nextToken();
-            while (jp.hasCurrentToken()) {
+//            jp.nextToken();
+            while (true) {
                 Book token = jp.readValueAs(Book.class);
-                Ingester.books.add(token);
+                books.add(token);
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
 
-    public void parseAuthors(Path path) {
-        try (var in = new FileInputStream(path.toFile())) {
-            var mapper = new ObjectMapper();
-            mapper.setAnnotationIntrospector(Ingester.implicitRecordAI);
-            var jp = new JsonFactory().createParser(in);
-            jp.setCodec(mapper);
-            jp.nextToken();
-            while (jp.hasCurrentToken()) {
-                Author token = jp.readValueAs(Author.class);
-                Ingester.authors.add(token);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+    public static void parseAuthors(InputStream stream, Queue<Author> authors) throws IOException {
+        var mapper = new ObjectMapper();
+        mapper.setAnnotationIntrospector(Ingester.implicitRecordAI);
+        var jp = new JsonFactory().createParser(stream);
+        jp.setCodec(mapper);
+        while(true) {
+            Author token = jp.readValueAs(Author.class);
+            authors.add(token);
         }
     }
 }

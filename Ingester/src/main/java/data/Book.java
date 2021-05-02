@@ -23,6 +23,7 @@ public record Book(
         @JsonProperty List<String> places,
         @JsonProperty String isbn,
         @JsonProperty String isbn13,
+        @JsonProperty String asin,
         @JsonProperty HashMap<Integer, Integer> rating_histogram
 ) {
 }
