@@ -1,15 +1,50 @@
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
-import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import SearchResults from "./components/SearchResults";
+import PreferredList from "./components/PreferredList";
 
 function App() {
-  let enumerate = 1;
   const [input, setInput] = useState("");
+  // const [searchResults, setSearchResults] = useState([]);
   const [preferred, setPreffered] = useState([]);
-  const onInputChange = (text) => {
+
+  const onInputChange = async (text) => {
     setInput(text);
+    /*
+    const res = await fetchSearchResults(input);
+    setSearchResults(res);
+    */
   };
+
+  /*
+  useEffect(() => {
+    const loadTop50 = async () => {
+      const API_RESULTS = await fetchResults("TOP_50");
+      setSearchResults(API_RESULTS);
+    };
+    loadTop50();
+  }, []);
+  */
+
+  /*
+  const fetchSearchResults = async (text) => {
+    const res = await fetch("FETCH TEXT");
+    const data = await res.json();
+
+    return data;
+  }
+  */
+
+  /*
+  const fetchRecommendations = async () => {
+    const res = await fetch("FETCH RECOMMENDATIONS");
+    const data = await res.json();
+
+    return data;
+  }
+  */
+
   const onCardClick = (id) => {
     const preferredList = [
       ...preferred,
@@ -18,10 +53,16 @@ function App() {
     console.log(preferredList);
     setPreffered(preferredList);
   };
+
   const onPreferredClick = (id) => {
     const preferredList = preferred.filter((item) => item.id !== id);
     setPreffered(preferredList);
   };
+
+  const clearPreferredList = () => {
+    setPreffered([]);
+  };
+
   // This will be fetched from API endpoint
   const resultsTest = [
     {
@@ -229,6 +270,7 @@ function App() {
         "Malcolm Gladwell is the author of five New York Times bestsellers\u2014The Tipping Point, Blink, Outliers, What the Dog Saw, and David and Goliath. He is also the co-founder of Pushkin Industries, an audio content company that produces the podcasts Revisionist History, which reconsiders things both overlooked and misunderstood, and Broken Record, where he, Rick Rubin, and Bruce Headlam interview musicians across a wide range of genres. Gladwell has been included in the TIME 100 Most Influential People list and touted as one of Foreign Policy's Top Global Thinkers. Malcolm Gladwell is the author of five New York Times bestsellers\u2014The Tipping Point, Blink, Outliers, What the Dog Saw, and David and Goliath. He is also the co-founder of Pushkin Industries, an audio content company that produces the podcasts Revisionist History, which reconsiders things both overlooked and misunderstood, and Broken Record, where he, Rick Rubin, and Bruce Headlam interview musicians across a wide range of genres. Gladwell has been included in the TIME 100 Most Influential People list and touted as one of Foreign Policy's Top Global Thinkers. ...more",
     },
   ];
+
   return (
     <div className="app-base">
       <div className="container">
@@ -239,17 +281,11 @@ function App() {
         </div>
       </div>
       <div className="container-cart">
-        {preferred.length
-          ? preferred.map((item) => (
-              <p
-                className="pointer"
-                key={item.id}
-                onClick={() => onPreferredClick(item.id)}
-              >
-                {enumerate++}. {item.name}
-              </p>
-            ))
-          : "Mark the books that you like!"}
+        <PreferredList
+          preferred={preferred}
+          onPreferredClick={onPreferredClick}
+          clearPreferredList={clearPreferredList}
+        />
       </div>
     </div>
   );

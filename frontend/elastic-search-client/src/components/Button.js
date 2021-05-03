@@ -1,11 +1,10 @@
-const Button = ({ type, text, onClick }) => {
-  const btnStyles = { marginLeft: 10 };
+const Button = ({ className, type, text, onClick, disabled }) => {
   return (
     <button
-      style={btnStyles}
-      className="btn btn-sm btn-success border-black"
+      className={className}
       type={type}
       onClick={onClick}
+      disabled={disabled}
     >
       {text}
     </button>
