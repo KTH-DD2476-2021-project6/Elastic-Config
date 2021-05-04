@@ -36,21 +36,71 @@ function App() {
   }
   */
 
-  /*
   const fetchRecommendations = async () => {
-    const res = await fetch("FETCH RECOMMENDATIONS");
+    const query = queryBuilder();
+    const res = await fetch("localhost:9200/book_index/_doc/_search/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    });
     const data = await res.json();
-
+    console.log(data);
     return data;
-  }
-  */
+  };
+
+  const queryBuilder = () => {
+    let query = {
+      query: {
+        bool: {
+          should: [],
+        },
+      },
+    };
+    const prettyConvert = preferred.map((item) => ({
+      author: item.name,
+      genres: item.genres,
+      language: "English",
+    }));
+
+    prettyConvert.forEach((obj) => {
+      Object.keys(obj).forEach((key) => {
+        if (!obj[key]) {
+          return;
+        }
+        if (key === "genres") {
+          obj[key].forEach((genre) =>
+            query.query.bool.should.push(phraseBuilder(key, genre))
+          );
+        } else {
+          query.query.bool.should.push(phraseBuilder(key, obj[key]));
+        }
+      });
+    });
+
+    console.log(JSON.stringify(query));
+    return query;
+  };
+
+  const phraseBuilder = (key, value) => {
+    let phrase;
+    phrase = {
+      match_phrase: {
+        [key]: {
+          query: value,
+        },
+      },
+    };
+    return phrase;
+  };
 
   const onCardClick = (id) => {
     const preferredList = [
       ...preferred,
       resultsTest.find((item) => item.id === id),
     ];
-    console.log(preferredList);
     setPreffered(preferredList);
   };
 
@@ -285,6 +335,7 @@ function App() {
           preferred={preferred}
           onPreferredClick={onPreferredClick}
           clearPreferredList={clearPreferredList}
+          onGetRecommendationsClick={queryBuilder}
         />
       </div>
     </div>

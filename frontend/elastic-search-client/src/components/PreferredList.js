@@ -1,9 +1,13 @@
 import PreferredItem from "./PreferredItem";
 import Button from "./Button";
 
-const PreferredList = ({ preferred, onPreferredClick, clearPreferredList }) => {
+const PreferredList = ({
+  preferred,
+  onPreferredClick,
+  clearPreferredList,
+  onGetRecommendationsClick,
+}) => {
   let index = 1;
-  const onBtnClick = () => console.log("Fetched recommendations");
 
   return (
     <>
@@ -33,7 +37,7 @@ const PreferredList = ({ preferred, onPreferredClick, clearPreferredList }) => {
           className="btn btn-sm btn-success border-black"
           type="button"
           text="Get recommendations!"
-          onClick={onBtnClick}
+          onClick={() => onGetRecommendationsClick()}
           disabled={!preferred.length}
         />
       </div>
