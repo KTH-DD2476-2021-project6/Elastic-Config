@@ -1,5 +1,7 @@
 # Elastic-Search-Client
 
+MAKE SURE THAT NODEJS IS INSTALLED!
+
 ## Available Scripts
 
 In the project directory:
