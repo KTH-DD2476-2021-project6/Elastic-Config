@@ -1,5 +1,6 @@
 import PreferredItem from "./PreferredItem";
 import Button from "./Button";
+import LinkButton from "./LinkButton";
 
 const PreferredList = ({
   preferred,
@@ -15,10 +16,10 @@ const PreferredList = ({
         {preferred.length ? (
           preferred.map((item) => (
             <PreferredItem
-              item={item}
+              item={item._source}
               index={index++}
               onPreferredClick={onPreferredClick}
-              key={item.id}
+              key={item._id}
             />
           ))
         ) : (
@@ -33,13 +34,7 @@ const PreferredList = ({
           onClick={clearPreferredList}
           disabled={!preferred.length}
         />
-        <Button
-          className="btn btn-sm btn-success border-black"
-          type="button"
-          text="Get recommendations!"
-          onClick={() => onGetRecommendationsClick()}
-          disabled={!preferred.length}
-        />
+        <LinkButton className="btn btn-sm btn-success border-black" disabled={!preferred.length} to="/recommendations" onClick={() => onGetRecommendationsClick()}>Get recommendations!</LinkButton>
       </div>
     </>
   );

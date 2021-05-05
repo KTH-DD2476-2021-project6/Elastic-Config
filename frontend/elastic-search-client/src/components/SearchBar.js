@@ -1,4 +1,6 @@
-const SearchBar = ({ value, onChange }) => {
+import Button from "./Button";
+
+const SearchBar = ({ value, onChange, onSearch }) => {
   return (
     <div className="input-group mt-5 mb-4">
       <div className="input-group-prepend">
@@ -16,6 +18,7 @@ const SearchBar = ({ value, onChange }) => {
         placeholder="Search for books and mark the one's you like..."
         type="text"
       />
+      <Button className="btn btn-sm btn-success" type="Button" text="Search" onClick={onSearch} disabled={!value} />
     </div>
   );
 };
