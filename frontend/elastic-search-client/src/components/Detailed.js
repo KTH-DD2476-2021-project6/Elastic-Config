@@ -1,5 +1,5 @@
 import LinkButton from "./LinkButton";
-import Rating from "react-rating";
+import ReactStars from "react-rating-stars-component";
 
 const Detailed = (props) => {
   const { _score, _source } = props.location.state.data;
@@ -15,6 +15,12 @@ const Detailed = (props) => {
     publish_date,
   } = _source;
   let genreID = 0;
+  const starsConfig = {
+    size: 40,
+    value: avg_rating,
+    edit: false,
+    char: "",
+  };
   return (
     <div className="container">
       <LinkButton
@@ -28,12 +34,10 @@ const Detailed = (props) => {
         <h3>{author}</h3>
         <h6>
           {" "}
-          <strong>Search score:</strong> {_score}
+          Search score: <strong>{_score}</strong>
         </h6>
-        <h6>Published: {publish_date}</h6>
         <h6>Average rating: {avg_rating}</h6>
-        <Rating initialRating={avg_rating} readonly />
-        <br />
+        <ReactStars {...starsConfig} />
         Genres:{" "}
         {genres.length ? (
           genres.map((genre) => <li key={genreID++}>{genre}</li>)
@@ -44,6 +48,7 @@ const Detailed = (props) => {
         <p># of pages: {num_pages}</p>
         <p>Language: {language}</p>
         <p>ISBN: {isbn13}</p>
+        <p>Published: {publish_date}</p>
         <a href={url}>Check out the book here!</a>
       </section>
     </div>
