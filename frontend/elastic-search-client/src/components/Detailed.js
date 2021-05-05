@@ -22,7 +22,7 @@ const Detailed = (props) => {
     char: "",
   };
   return (
-    <div className="container">
+    <div className="container-detailed">
       <LinkButton
         to="/recommendations"
         className="btn btn-sm btn-warning border-black"
@@ -40,7 +40,14 @@ const Detailed = (props) => {
         <ReactStars {...starsConfig} />
         Genres:{" "}
         {genres.length ? (
-          genres.map((genre) => <li key={genreID++}>{genre}</li>)
+          genres.map((genre) => (
+            <li key={genreID++}>
+              <small>
+                {" "}
+                <i>{genre}</i>
+              </small>
+            </li>
+          ))
         ) : (
           <i>...not specified</i>
         )}
@@ -48,8 +55,9 @@ const Detailed = (props) => {
         <p># of pages: {num_pages}</p>
         <p>Language: {language}</p>
         <p>ISBN: {isbn13}</p>
-        <p>Published: {publish_date}</p>
-        <a href={url}>Check out the book here!</a>
+        <p>
+          Published: {publish_date} <a href={url}> Check out the book here!</a>
+        </p>
       </section>
     </div>
   );

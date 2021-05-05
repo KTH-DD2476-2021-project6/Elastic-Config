@@ -6,7 +6,7 @@ const PreferredList = ({
   preferred,
   onPreferredClick,
   clearPreferredList,
-  onGetRecommendationsClick,
+  onFetchRecommendations,
 }) => {
   let index = 1;
 
@@ -38,7 +38,7 @@ const PreferredList = ({
           className="btn btn-sm btn-success border-black"
           disabled={!preferred.length}
           to="/recommendations"
-          onClick={() => onGetRecommendationsClick()}
+          onClick={() => onFetchRecommendations()}
         >
           Get recommendations!
         </LinkButton>

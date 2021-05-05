@@ -36,6 +36,17 @@ code {
   border-radius: 5px;
 }
 
+.container-detailed {
+  min-width: 500px;
+  max-width: 700px;
+  margin: 20px;
+  overflow: auto;
+  min-height: fit-content;
+  border: 1px solid steelblue;
+  padding: 30px;
+  border-radius: 5px;
+}
+
 .container-cart {
   width: 300px;
   margin: 20px;

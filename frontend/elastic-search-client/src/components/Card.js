@@ -27,12 +27,19 @@ const Card = ({ item, onCardClick }) => {
           <small className="card-text">
             <b>Genres: </b>
             {genres ? (
-              genres.map((genre) => <i key={genreID++}> {genre}, </i>)
+              genres.map((genre) => (
+                <small key={genreID++}>
+                  <i key={genreID++}> {genre}, </i>{" "}
+                </small>
+              ))
             ) : (
               <i> ...not specified</i>
             )}
           </small>
-          <small className="card-text">{language}</small>
+          <br />
+          <small>
+            <b className="card-text">{language}</b>
+          </small>
         </div>
       </div>
     </div>

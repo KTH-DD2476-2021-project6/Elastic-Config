@@ -125,6 +125,9 @@ const Recommendations = ({ recommendations }) => {
     },
   };
   const history = useHistory();
+  const onCardClick = (id, data) =>
+    history.push(`/detailed/${id}`, { data: data });
+  console.log(recommendations);
 
   return (
     <div className="container">
@@ -139,9 +142,7 @@ const Recommendations = ({ recommendations }) => {
                 <Card
                   key={result._id}
                   item={result}
-                  onCardClick={() =>
-                    history.push(`/detailed/${result._id}`, { data: result })
-                  }
+                  onCardClick={() => onCardClick(result._id, result)}
                 />
               ))}
             </div>

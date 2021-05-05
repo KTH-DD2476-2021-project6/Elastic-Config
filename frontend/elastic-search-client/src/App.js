@@ -11,14 +11,18 @@ function App() {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [preferred, setPreffered] = useState([]);
+  const [recommendations, setRecommendations] = useState("test");
 
   /*
   useEffect(() => {
     const loadTop50 = async () => {
-      const API_RESULTS = await fetchResults("TOP_50");
-      setSearchResults(API_RESULTS);
+      const res = await fetchResults(`http://localhost:9200/book_index/_doc/_search/?q=TOP50`);
+      const data = await res.json();
+      return data;
     };
-    loadTop50();
+    loadTop50()
+    .then(res => setSearchResults(res))
+    .catch(err => console.error(err));
   }, []);
   */
 
@@ -33,31 +37,6 @@ function App() {
       })
       .catch((err) => console.error(err))
       .finally(() => setInput(""));
-  };
-
-  const fetchSearchResults = async (text) => {
-    const res = await fetch(
-      `http://localhost:9200/book_index/_doc/_search/?q=${text}`
-    );
-    const data = await res.json();
-
-    return data;
-  };
-
-  const fetchRecommendations = async () => {
-    const query = queryBuilder();
-    const res = await fetch("http://localhost:9200/book_index/_doc/_search/", {
-      crossDomain: true,
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(query),
-    });
-    const data = await res.json();
-    console.log("RECOMMENDATIONS: ", data);
-    return data;
   };
 
   const onCardClick = (id) => {
@@ -78,6 +57,38 @@ function App() {
     setPreffered([]);
   };
 
+  const onFetchRecommendations = () => {
+    fetchRecommendations()
+      .then((res) => {
+        console.log("RECOMMENDATIONS: ", res);
+        setRecommendations(res);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const fetchSearchResults = async (text) => {
+    const res = await fetch(
+      `http://localhost:9200/book_index/_doc/_search/?q=${text}`
+    );
+    const data = await res.json();
+    return data;
+  };
+
+  const fetchRecommendations = async () => {
+    const query = queryBuilder();
+    const res = await fetch("http://localhost:9200/book_index/_doc/_search/", {
+      crossDomain: true,
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(query),
+    });
+    const data = await res.json();
+    return data;
+  };
+
   const queryBuilder = () => {
     let query = {
       query: {
@@ -86,14 +97,12 @@ function App() {
         },
       },
     };
-
     console.log("PREFERREDLIST: ", preferred);
     const prettyConvert = preferred.map((item) => ({
       author: item._source.author,
       genres: item._source.genres,
       language: item._source.language,
     }));
-
     prettyConvert.forEach((obj) => {
       Object.keys(obj).forEach((key) => {
         if (!obj[key]) {
@@ -108,7 +117,6 @@ function App() {
         }
       });
     });
-
     console.log("QUERY OBJECT: ", JSON.stringify(query));
     return query;
   };
@@ -148,11 +156,13 @@ function App() {
               preferred={preferred}
               onPreferredClick={onPreferredClick}
               clearPreferredList={clearPreferredList}
-              onGetRecommendationsClick={fetchRecommendations}
+              onFetchRecommendations={onFetchRecommendations}
             />
           </div>
         </Route>
-        <Route path="/recommendations" component={Recommendations} />
+        <Route path="/recommendations">
+          <Recommendations recommendations={recommendations} />
+        </Route>
         <Route path="/detailed/:id" component={Detailed} />
       </div>
     </Router>
