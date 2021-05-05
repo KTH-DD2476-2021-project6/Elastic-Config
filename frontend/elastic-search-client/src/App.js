@@ -1,19 +1,16 @@
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import SearchResults from "./components/SearchResults";
 import PreferredList from "./components/PreferredList";
 import Recommendations from "./components/Recommendations";
+import Detailed from "./components/Detailed";
 
 function App() {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [preferred, setPreffered] = useState([]);
-
-  const onInputChange = (text) => {
-    setInput(text);
-  };
 
   /*
   useEffect(() => {
@@ -25,21 +22,28 @@ function App() {
   }, []);
   */
 
+  const onInputChange = (text) => {
+    setInput(text);
+  };
+
   const onSearch = () => {
     fetchSearchResults(input)
-    .then(res => {
-      setSearchResults(res.hits)
-    })
-    .catch(err => console.Error(err));
-  }
-  
+      .then((res) => {
+        setSearchResults(res.hits);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setInput(""));
+  };
+
   const fetchSearchResults = async (text) => {
-    const res = await fetch(`http://localhost:9200/book_index/_doc/_search/?q=${text}`);
+    const res = await fetch(
+      `http://localhost:9200/book_index/_doc/_search/?q=${text}`
+    );
     const data = await res.json();
 
     return data;
-  }
-  
+  };
+
   const fetchRecommendations = async () => {
     const query = queryBuilder();
     const res = await fetch("http://localhost:9200/book_index/_doc/_search/", {
@@ -54,6 +58,24 @@ function App() {
     const data = await res.json();
     console.log("RECOMMENDATIONS: ", data);
     return data;
+  };
+
+  const onCardClick = (id) => {
+    const preferredList = [
+      ...preferred,
+      searchResults.hits.find((item) => item._id === id),
+    ];
+    setPreffered(preferredList);
+    console.log("SEARCH RESULTS: ", searchResults);
+  };
+
+  const onPreferredClick = (id) => {
+    const preferredList = preferred.filter((item) => item._id !== id);
+    setPreffered(preferredList);
+  };
+
+  const clearPreferredList = () => {
+    setPreffered([]);
   };
 
   const queryBuilder = () => {
@@ -103,33 +125,22 @@ function App() {
     return phrase;
   };
 
-  const onCardClick = (id) => {
-   const preferredList = [
-      ...preferred,
-      searchResults.hits.find((item) => item._id === id),
-    ];
-    setPreffered(preferredList);
-    console.log("SEARCH RESULTS: ",searchResults);
-  };
-
-  const onPreferredClick = (id) => {
-    const preferredList = preferred.filter((item) => item._id !== id);
-    setPreffered(preferredList);
-  };
-
-  const clearPreferredList = () => {
-    setPreffered([]);
-  };
-
   return (
     <Router>
-      <Route path="/" exact>
-        <div className="app-base">
+      <div className="app-base">
+        <Route path="/" exact>
           <div className="container">
             <div>
               <Header title="Book Recommendation's - Elastic Search" />
-              <SearchBar value={input} onChange={onInputChange} onSearch={onSearch} />
-              <SearchResults results={searchResults} onCardClick={onCardClick} />
+              <SearchBar
+                value={input}
+                onChange={onInputChange}
+                onSearch={onSearch}
+              />
+              <SearchResults
+                results={searchResults}
+                onCardClick={onCardClick}
+              />
             </div>
           </div>
           <div className="container-cart">
@@ -140,10 +151,10 @@ function App() {
               onGetRecommendationsClick={fetchRecommendations}
             />
           </div>
-        </div>
-    </Route>
-    <Route path="/recommendations" component={Recommendations}>
-    </Route>
+        </Route>
+        <Route path="/recommendations" component={Recommendations} />
+        <Route path="/detailed/:id" component={Detailed} />
+      </div>
     </Router>
   );
 }

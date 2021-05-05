@@ -34,7 +34,14 @@ const PreferredList = ({
           onClick={clearPreferredList}
           disabled={!preferred.length}
         />
-        <LinkButton className="btn btn-sm btn-success border-black" disabled={!preferred.length} to="/recommendations" onClick={() => onGetRecommendationsClick()}>Get recommendations!</LinkButton>
+        <LinkButton
+          className="btn btn-sm btn-success border-black"
+          disabled={!preferred.length}
+          to="/recommendations"
+          onClick={() => onGetRecommendationsClick()}
+        >
+          Get recommendations!
+        </LinkButton>
       </div>
     </>
   );

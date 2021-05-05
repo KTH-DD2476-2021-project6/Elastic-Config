@@ -7,7 +7,7 @@ const PreferredItem = ({ item, index, onPreferredClick }) => {
       <FaTimes
         className="mx-1"
         style={{ color: "red", cursor: "pointer" }}
-        onClick={() => onPreferredClick(item.id)}
+        onClick={() => onPreferredClick(item._id)}
       />
     </h6>
   );

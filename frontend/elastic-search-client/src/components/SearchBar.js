@@ -3,7 +3,7 @@ import Button from "./Button";
 const SearchBar = ({ value, onChange, onSearch }) => {
   return (
     <div className="input-group mt-5 mb-4">
-      <div className="input-group-prepend">
+      <div className="input-group-prepend border-black">
         <div className="input-group-text" id="btnGroupAddon2">
           <img
             alt=""
@@ -17,8 +17,20 @@ const SearchBar = ({ value, onChange, onSearch }) => {
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search for books and mark the one's you like..."
         type="text"
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onSearch();
+          }
+        }}
       />
-      <Button className="btn btn-sm btn-success" type="Button" text="Search" onClick={onSearch} disabled={!value} />
+      <Button
+        className="btn btn-sm btn-success border-black"
+        type="Button"
+        text="Search"
+        onClick={onSearch}
+        disabled={!value}
+      />
     </div>
   );
 };

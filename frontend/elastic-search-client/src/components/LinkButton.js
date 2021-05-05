@@ -1,6 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
+import React from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 const LinkButton = (props) => {
   const {
@@ -10,23 +10,22 @@ const LinkButton = (props) => {
     staticContext,
     to,
     onClick,
-    // ⬆ filtering out props that `button` doesn’t know what to do with.
     ...rest
-  } = props
+  } = props;
   return (
     <button
       {...rest}
       onClick={(event) => {
-        onClick && onClick(event)
-        history.push(to)
+        onClick && onClick(event);
+        history.push(to);
       }}
     />
-  )
-}
+  );
+};
 
 LinkButton.propTypes = {
   to: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired
-}
+  children: PropTypes.node.isRequired,
+};
 
-export default withRouter(LinkButton)
+export default withRouter(LinkButton);

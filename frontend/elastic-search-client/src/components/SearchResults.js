@@ -2,7 +2,7 @@ import Card from "./Card";
 
 const SearchResults = ({ results, onCardClick }) => {
   return (
-    <section className="album-section">
+    <section className="album-section scrollable">
       {results.hits?.length ? (
         <div className="album py-3 bg-light">
           <div className="row mx-2">

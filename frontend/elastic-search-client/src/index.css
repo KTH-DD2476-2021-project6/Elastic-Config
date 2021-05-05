@@ -29,7 +29,8 @@ code {
   max-width: 1000px;
   margin: 20px;
   overflow: auto;
-  min-height: 600px;
+  min-height: 700px;
+  max-height: 1000px;
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
@@ -66,13 +67,14 @@ code {
 }
 
 .album-section {
-  max-height: 600px;
+  max-height: 700px;
+  justify-content: center;
 }
 
 .cardElement {
   display: flex;
-  max-width: 230px;
-  max-height: fit-content;
+  max-width: 250px;
+  max-height: min-content;
 }
 
 .cardText {

@@ -3,7 +3,7 @@ const Card = ({ item, onCardClick }) => {
   const { _id, _score } = item;
   const { title, author, avg_rating, genres, language } = item._source;
   return (
-    <div className="col-md-4 cardElement scrollable">
+    <div className="col-md-4 cardElement">
       <div
         className="card mb-3 shadow cardHover"
         onClick={() => {
@@ -11,28 +11,28 @@ const Card = ({ item, onCardClick }) => {
         }}
       >
         {/*<div className="card-image-container">
-          <img className="card-img-top cardImage" src={image} alt="Cover" />
-      </div>*/}
+          <img className="card-img-top cardImage" src={url} alt="Cover" />
+        </div>*/}
         <div className="card-body">
           <small className="card-text">
-            <b>{title}</b>
-            <i>{author}</i>
-            <i>{_score}</i>
+            <p>
+              <b>{title}</b>
+            </p>
+            <p>
+              <i>{author}</i>
+            </p>
+            <p>Score: {_score}</p>
+            <p>Average rating: {avg_rating}</p>
           </small>
-          <br />
-          <small className="card-text">Average rating: {avg_rating}</small>
-          <br />
           <small className="card-text">
-            Genres -
+            <b>Genres: </b>
             {genres ? (
               genres.map((genre) => <i key={genreID++}> {genre}, </i>)
             ) : (
-              <i> not specified...</i>
+              <i> ...not specified</i>
             )}
           </small>
-          <small className="card-text">
-              {language}
-          </small>
+          <small className="card-text">{language}</small>
         </div>
       </div>
     </div>
