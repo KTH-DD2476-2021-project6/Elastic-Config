@@ -47,26 +47,19 @@ public class Ingester {
         }
     };
     public LinkedBlockingQueue<Book> books = new LinkedBlockingQueue<>();
-    public LinkedBlockingQueue<Author> authors = new LinkedBlockingQueue<>();
     private InputStream bookStream;
-    private InputStream authorStream;
     private static String ELASTIC_PATH = "http://localhost:9200/";
-    private static String BOOK_INDEX = "book_index/_doc";
-    private static String AUTHOR_INDEX = "author_index/_doc";
+    private static String BOOK_INDEX = "book_index/";
 
     public Ingester() {
         bookStream = new BufferedInputStream(Objects
                 .requireNonNull(getClass()
                         .getResourceAsStream("book_test.json")));
-        authorStream = new BufferedInputStream(Objects
-                .requireNonNull(getClass()
-                        .getResourceAsStream("author_test.json")));
     }
 
-    public Ingester(String bookPath, String authorPath) {
+    public Ingester(String bookPath) {
         try {
             bookStream = new BufferedInputStream(new FileInputStream(bookPath));
-            authorStream = new BufferedInputStream(new FileInputStream(authorPath));
         } catch (IOException ex) {
             ex.printStackTrace();
             System.err.println("Issues with following path");
@@ -76,48 +69,20 @@ public class Ingester {
 
     public void run(){
         ElasticCaller<Book> bookIndexer = null;
-        ElasticCaller<Author> authorIndexer = null;
         try {
             bookIndexer = new ElasticCaller<>(books, new URI(ELASTIC_PATH + BOOK_INDEX));
-            authorIndexer = new ElasticCaller<>(authors, new URI(ELASTIC_PATH + AUTHOR_INDEX));
+
         } catch (URISyntaxException ex) {
             ex.printStackTrace();
             System.exit(1);
         }
-        var bookParser = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while(true) {
-                        Parser.parseBooks(bookStream, books);
-                    }
-                }
-                catch (IOException ex) {
-                    System.err.println("Parsed books");
-                }
-
-            }
-        };
-        var authorParser = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while(true) {
-                        Parser.parseAuthors(authorStream, authors);
-                    }
-                }
-                catch (IOException ex) {
-                    System.err.println("Parsed authors");
-                }
-            }
-        };
+        var bookParser = new Parser(bookStream, books);
 
         bookParser.start();
-        authorParser.start();
         bookIndexer.start();
-        authorIndexer.start();
 
-        while (bookParser.isAlive() || authorParser.isAlive() || bookIndexer.isAlive() || authorIndexer.isAlive()) {
+        while (bookParser.isAlive() ||
+                bookIndexer.isAlive()) {
             try {
                 synchronized (this) {
                     this.wait(10000);
@@ -140,18 +105,14 @@ public class Ingester {
             ingester = new Ingester();
         else {
             String bookPath = null;
-            String authorPath = null;
             for (int i = 0; i < args.length-1; i++) {
                 if ("-b".equals(args[i])) {
                     bookPath = args[i + 1];
                 }
-                if ("-a".equals(args[i])) {
-                    authorPath = args[i + 1];
-                }
             }
-            if (bookPath == null || authorPath == null)
+            if (bookPath == null)
                 throw new InvalidPathException(args.toString(), "invalid input");
-            ingester = new Ingester(bookPath, authorPath);
+            ingester = new Ingester(bookPath);
         }
         return ingester;
     }

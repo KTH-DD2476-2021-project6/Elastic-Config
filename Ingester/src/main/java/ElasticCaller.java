@@ -21,7 +21,7 @@ public class ElasticCaller<T> extends Thread{
     public ElasticCaller(LinkedBlockingQueue<T> queue, URI uri) {
         this.queue = queue;
         mapper.setAnnotationIntrospector(Ingester.implicitRecordAI);
-        resource = ClientBuilder.newClient().target(uri);
+        resource = ClientBuilder.newClient().target(uri+"_doc");
     }
 
 
@@ -32,7 +32,7 @@ public class ElasticCaller<T> extends Thread{
         int i = 0;
         try {
             while (true) {
-                var e = queue.poll(1, TimeUnit.MINUTES);
+                var e = queue.poll(5, TimeUnit.SECONDS);
                 if (e==null)
                     return;
                 try {
@@ -42,14 +42,14 @@ public class ElasticCaller<T> extends Thread{
                             .post(Entity.json(jsonString));
                     if (response.getStatus()/100 != 2) {
                         synchronized (this) {
-                            System.err.println(response.getStatusInfo().getReasonPhrase());
+                            System.err.println(response.getStatusInfo());
                         }
                     } else {
                         i++;
                     }
-                    if (i%5 == 0) {
+                    if (i%1000 == 0) {
                         synchronized (this) {
-                            System.out.println("indexed " + i + " documents");
+                            System.err.println(i + " Documents indexed");
                         }
                     }
                 } catch (JacksonException ex) {
