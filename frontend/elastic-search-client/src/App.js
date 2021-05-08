@@ -61,6 +61,7 @@ function App() {
     fetchRecommendations()
       .then((res) => {
         console.log("RECOMMENDATIONS: ", res);
+        
         setRecommendations(res);
       })
       .catch((err) => console.error(err));
@@ -110,10 +111,13 @@ function App() {
         }
         if (key === "genres") {
           obj[key].forEach((genre) =>
-            query.query.bool.should.push(phraseBuilder(key, genre))
+            query.query.bool.should.push(phraseBuilder(key, genre, 2))
           );
-        } else {
-          query.query.bool.should.push(phraseBuilder(key, obj[key]));
+        } else if (key==="author") {
+          query.query.bool.should.push(phraseBuilder(key, obj[key]), 1);
+        }
+        else{
+          query.query.bool.should.push(phraseBuilder(key, obj[key], 1000000))
         }
       });
     });
@@ -121,12 +125,13 @@ function App() {
     return query;
   };
 
-  const phraseBuilder = (key, value) => {
+  const phraseBuilder = (key, value, boostvalue) => {
     let phrase;
     phrase = {
       match_phrase: {
         [key]: {
           query: value,
+          boost: boostvalue,
         },
       },
     };
