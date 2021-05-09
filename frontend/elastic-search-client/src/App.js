@@ -11,20 +11,16 @@ function App() {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [preferred, setPreffered] = useState([]);
-  const [recommendations, setRecommendations] = useState("test");
+  const [recommendations, setRecommendations] = useState(null);
 
-  /*
   useEffect(() => {
-    const loadTop50 = async () => {
-      const res = await fetchResults(`http://localhost:9200/book_index/_doc/_search/?q=TOP50`);
-      const data = await res.json();
-      return data;
-    };
-    loadTop50()
-    .then(res => setSearchResults(res))
-    .catch(err => console.error(err));
+    fetchSearchResults("and")
+      .then((res) => {
+        console.log("RES IN USEEFFECT", res);
+        setSearchResults(res);
+      })
+      .catch((err) => console.error(err));
   }, []);
-  */
 
   const onInputChange = (text) => {
     setInput(text);
@@ -61,7 +57,6 @@ function App() {
     fetchRecommendations()
       .then((res) => {
         console.log("RECOMMENDATIONS: ", res);
-        
         setRecommendations(res);
       })
       .catch((err) => console.error(err));
@@ -113,11 +108,10 @@ function App() {
           obj[key].forEach((genre) =>
             query.query.bool.should.push(phraseBuilder(key, genre, 2))
           );
-        } else if (key==="author") {
+        } else if (key === "author") {
           query.query.bool.should.push(phraseBuilder(key, obj[key]), 1);
-        }
-        else{
-          query.query.bool.should.push(phraseBuilder(key, obj[key], 1000000))
+        } else {
+          query.query.bool.should.push(phraseBuilder(key, obj[key], 1000000));
         }
       });
     });
