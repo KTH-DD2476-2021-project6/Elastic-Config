@@ -2,17 +2,15 @@ const Card = ({ item, onCardClick }) => {
   let genreID = 0;
   const { _id, _score } = item;
   const { title, author, avg_rating, genres, language } = item._source;
+
   return (
     <div className="col-md-4 cardElement">
       <div
-        className="card mb-3 shadow cardHover"
+        className="card text-white mb-3 shadow cardHover bg-dark"
         onClick={() => {
           onCardClick(_id);
         }}
       >
-        {/*<div className="card-image-container">
-          <img className="card-img-top cardImage" src={url} alt="Cover" />
-        </div>*/}
         <div className="card-body">
           <small className="card-text">
             <p>

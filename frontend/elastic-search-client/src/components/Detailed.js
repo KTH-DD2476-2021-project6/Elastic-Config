@@ -17,7 +17,7 @@ const Detailed = (props) => {
   let genreID = 0;
   const starsConfig = {
     size: 40,
-    value: avg_rating,
+    value: Number(avg_rating),
     edit: false,
     char: "",
   };

@@ -9,7 +9,6 @@ const PreferredList = ({
   onFetchRecommendations,
 }) => {
   let index = 1;
-
   return (
     <>
       <div className="preferred-list">
@@ -20,6 +19,7 @@ const PreferredList = ({
               index={index++}
               onPreferredClick={onPreferredClick}
               key={item._id}
+              id={item._id}
             />
           ))
         ) : (

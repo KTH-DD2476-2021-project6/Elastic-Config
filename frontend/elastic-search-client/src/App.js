@@ -16,8 +16,7 @@ function App() {
   useEffect(() => {
     fetchSearchResults("and")
       .then((res) => {
-        console.log("RES IN USEEFFECT", res);
-        setSearchResults(res);
+        setSearchResults(res.hits);
       })
       .catch((err) => console.error(err));
   }, []);
@@ -36,12 +35,16 @@ function App() {
   };
 
   const onCardClick = (id) => {
+    const isInList = preferred.find(item => item._id === id);
+    if (isInList) {
+      window.alert("The book is already marked!");
+      return;
+    }
     const preferredList = [
       ...preferred,
       searchResults.hits.find((item) => item._id === id),
     ];
     setPreffered(preferredList);
-    console.log("SEARCH RESULTS: ", searchResults);
   };
 
   const onPreferredClick = (id) => {
@@ -56,7 +59,6 @@ function App() {
   const onFetchRecommendations = () => {
     fetchRecommendations()
       .then((res) => {
-        console.log("RECOMMENDATIONS: ", res);
         setRecommendations(res);
       })
       .catch((err) => console.error(err));
@@ -87,13 +89,14 @@ function App() {
 
   const queryBuilder = () => {
     let query = {
+      from: 0,
+      size: preferred.length + 3,
       query: {
         bool: {
           should: [],
         },
       },
     };
-    console.log("PREFERREDLIST: ", preferred);
     const prettyConvert = preferred.map((item) => ({
       author: item._source.author,
       genres: item._source.genres,
@@ -115,7 +118,6 @@ function App() {
         }
       });
     });
-    console.log("QUERY OBJECT: ", JSON.stringify(query));
     return query;
   };
 
@@ -160,7 +162,7 @@ function App() {
           </div>
         </Route>
         <Route path="/recommendations">
-          <Recommendations recommendations={recommendations} />
+          <Recommendations recommendations={recommendations} preferred={preferred} />
         </Route>
         <Route path="/detailed/:id" component={Detailed} />
       </div>
