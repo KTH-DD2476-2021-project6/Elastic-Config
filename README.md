@@ -12,12 +12,23 @@ there, look in `docker ps -a`. If it exists there, it's merely stopped and can b
 When your container is up and running, you'll want to create the indexes we'll be using. Once an index has been created,
 its mappings can only be added to, and not changed later. Now let's create our indexes:
 
-Do this by running these requests from terminal
-
-```curl -X PUT --data "@./author_template.json" -H "Content-Type: application/json" "http://localhost:9200/author_index"```
+Do this by running this request from terminal
 
 ```curl -X PUT --data "@./book_template.json" -H "Content-Type: application/json" "http://localhost:9200/book_index"```
 
 or do put requests to the same endpoints with Postman
 
 ## Indexing files
+
+To ingest the books into Elasticsearch, make sure that the data-repository has been cloned, and run the following
+command pointing to that repository. 
+
+```java -jar Ingester-1.0.jar -b "{$PATH_TO_CRAWLER_REPO}Crawler/JSON/book_goodversion.jl"```
+
+It'll parse the data and in parallell start indexing the books. The port 9200 is hardcoded into the code, so please do
+not change the docker settings mentioned higher up.  
+
+## Front-end startup
+
+Please go to the front-end folder and follow the instructions in the separate README which is there
+
