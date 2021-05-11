@@ -1,0 +1,4 @@
+FROM openjdk:16-jre-slim
+
+ARG BOOKS_FILE="unknown"
+
