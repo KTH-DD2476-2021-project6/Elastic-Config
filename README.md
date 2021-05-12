@@ -23,7 +23,9 @@ or do put requests to the same endpoints with Postman
 To ingest the books into Elasticsearch, make sure that the data-repository has been cloned, and run the following
 command pointing to that repository. 
 
-```java -jar Ingester-1.0.jar -b "{$PATH_TO_CRAWLER_REPO}Crawler/JSON/book_goodversion.jl"```
+```java -jar Ingester-1.0.jar -b "$PWD/book_goodversion.jl"```
+
+Please use absolute paths since Java might have issues on some systems to follow relative paths with spaces
 
 It'll parse the data and in parallell start indexing the books. The port 9200 is hardcoded into the code, so please do
 not change the docker settings mentioned higher up.  
