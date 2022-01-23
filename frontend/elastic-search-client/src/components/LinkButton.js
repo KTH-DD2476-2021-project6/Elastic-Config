@@ -3,15 +3,8 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
 const LinkButton = (props) => {
-  const {
-    history,
-    location,
-    match,
-    staticContext,
-    to,
-    onClick,
-    ...rest
-  } = props;
+  const { history, location, match, staticContext, to, onClick, ...rest } =
+    props;
   return (
     <button
       {...rest}
